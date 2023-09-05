@@ -1752,7 +1752,7 @@ RightGroupBox:AddDropdown('Select Dungeon', {
     Multi = false,
     Text = 'Select Portal',
     Callback = function(Value)
-        select = Value  -- Update selectChallenge when the dropdown changes
+        selectPickPortal = Value  -- Update selectChallenge when the dropdown changes
     end
 })
 
