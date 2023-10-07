@@ -1,3 +1,5 @@
+warn('[TEMPEST HUB] Loading Ui')
+wait(1)
 local repo = 'https://raw.githubusercontent.com/violin-suzutsuki/LinoriaLib/main/'
     
 local Library = loadstring(game:HttpGet(repo .. 'Library.lua'))()
@@ -12,6 +14,11 @@ local Window = Library:CreateWindow({
     TabPadding = 8,
     MenuFadeTime = 0.2
 })
+
+Library:Notify('Loading Anime Adventures Script', 5)
+
+warn('[TEMPEST HUB] Loading Functions')
+wait(1)
 
 function deleteinfplayer()
     while getgenv().deleteinfplayer do
@@ -309,6 +316,37 @@ function pickportalsummer()
  wait(1)
  end
  end
+
+ function pickportalfate()
+    while getgenv().pickportalfate == true do
+        wait(1)
+        
+        -- Obtenha o valor de 'valor' de forma mais segura
+        local valor = game:GetService("ReplicatedStorage")._FX_CACHE.portal_item__fate and game:GetService("ReplicatedStorage")._FX_CACHE.portal_item__fate._uuid_or_id and game:GetService("ReplicatedStorage")._FX_CACHE.portal_item__fate._uuid_or_id.Value
+        
+        if valor then
+            local args1 = {
+                [1] = "Items",
+                [2] = 0
+            }
+            
+            -- Chame a função com os valores atualizados
+            game:GetService("ReplicatedStorage").endpoints.client_to_server.save_notifications_state:InvokeServer(unpack(args1))
+            
+            wait(1)
+            
+            local ohString1 = "replay"
+            local ohTable2 = {
+                ["item_uuid"] = valor
+            }
+            
+            -- Chame a função com os valores atualizados
+            game:GetService("ReplicatedStorage").endpoints.client_to_server.set_game_finished_vote:InvokeServer(ohString1, ohTable2)
+            
+            wait(1)
+        end
+    end
+end
 
  function pickportalsds()
     while getgenv().pickportalsds == true do
@@ -683,6 +721,33 @@ function autoOpenEclipsePortal()
     end
 end
 
+function autoOpenFatePortal()
+    while getgenv().autoOpenFatePortal == true do
+        local valor = game:GetService("ReplicatedStorage")._FX_CACHE:FindFirstChild('portal_item__fate') and game:GetService("ReplicatedStorage")._FX_CACHE.portal_item__fate:FindFirstChild('_uuid_or_id') and game:GetService("ReplicatedStorage")._FX_CACHE.portal_item__fate._uuid_or_id.Value
+
+        if valor then 
+            local args1 = {
+                [1] = "Items",
+                [2] = 0
+            }
+
+            game:GetService("ReplicatedStorage").endpoints.client_to_server.save_notifications_state:InvokeServer(unpack(args1))
+
+            local args2 = {
+                [1] = valor,
+                [2] = {
+                    ["friends_only"] = selectFriends == 'True'
+                }
+            }
+
+            game:GetService("ReplicatedStorage").endpoints.client_to_server.use_portal:InvokeServer(unpack(args2))
+            break
+        end
+    end
+end
+
+warn('[TEMPEST HUB] Loading Checking Toggles')
+wait(1)
 
 local Tabs = {
     -- Creates a new tab titled Main
@@ -725,6 +790,7 @@ LeftGroupBox:AddToggle('Security Mode', {
         end
     end
 })
+
 
 local LeftGroupBox = Tabs.Main:AddLeftGroupbox('Game')
 
@@ -1671,11 +1737,11 @@ LeftGroupBox:AddToggle('Auto Infinite', {
     end
 })
 
--- Define global variables to hold the selected challenge and friends option
 local selectOpenPortal = 'Summer Portal'
 local selectFriends = 'False'
 
-function autoopenToggle(Value)
+-- Function to toggle the auto-open feature for different portals
+function autoOpenToggle(Value)
     if Value then
         if selectOpenPortal == 'Summer Portal' then
             getgenv().autoOpenSummerPortal = Value
@@ -1689,6 +1755,9 @@ function autoopenToggle(Value)
         elseif selectOpenPortal == 'Eclipse Portal' then
             getgenv().autoOpenEclipsePortal = Value
             autoOpenEclipsePortal()
+        elseif selectOpenPortal == 'Fate Portal' then
+            getgenv().autoOpenFatePortal = Value
+            autoOpenFatePortal()
         end
     end
 end
@@ -1696,17 +1765,17 @@ end
 -- Your dropdown and toggle setup
 local LeftGroupBox = Tabs.Main:AddLeftGroupbox('Auto Open Portal')
 
-LeftGroupBox:AddDropdown('Select Dungeon', {
-    Values = { 'Summer Portal', 'Dressrosa Portal', '7ds Portal', 'Eclipse Portal' },
+LeftGroupBox:AddDropdown('Select Portal', {
+    Values = { 'Summer Portal', 'Dressrosa Portal', '7ds Portal', 'Eclipse Portal', 'Fate Portal' },
     Default = 1,
     Multi = false,
     Text = 'Select Portal',
     Callback = function(Value)
-        selectOpenPortal = Value  -- Update selectChallenge when the dropdown changes
+        selectOpenPortal = Value  -- Update selectOpenPortal when the dropdown changes
     end
 })
 
-LeftGroupBox:AddDropdown('Only Friends', {  -- Corrected the dropdown name
+LeftGroupBox:AddDropdown('Only Friends', {
     Values = { 'False', 'True' },
     Default = 1,
     Multi = false,
@@ -1721,7 +1790,7 @@ LeftGroupBox:AddToggle('Auto Open Portal', {
     Default = false,
     Tooltip = 'Auto Open Portal',
     Callback = function(Value)
-        autoopenToggle(Value)
+        autoOpenToggle(Value)
     end
 })
 
@@ -1739,6 +1808,9 @@ function autoPickportalToggle(Value)
         elseif selectPickPortal == 'Eclipse Portal' then
             getgenv().pickportaleclipse = Value
             pickportaleclipse()
+        elseif selectPickPortal == 'Fate Portal' then
+            getgenv().pickportalfate = Value
+            pickportalfate()
         end
     end
 end
@@ -1747,7 +1819,7 @@ end
 local RightGroupBox = Tabs.Main:AddRightGroupbox('Auto Pick Portal')
 
 RightGroupBox:AddDropdown('Select Dungeon', {
-    Values = { 'Summer Portal', 'Dressrosa Portal', '7ds Portal', 'Eclipse Portal' },
+    Values = { 'Summer Portal', 'Dressrosa Portal', '7ds Portal', 'Eclipse Portal', 'Fate Portal' },
     Default = 1,
     Multi = false,
     Text = 'Select Portal',
@@ -1862,3 +1934,5 @@ SaveManager:LoadAutoloadConfig()
 for i,v in pairs(getconnections(game.Players.LocalPlayer.Idled)) do
     v:Disable()
 end
+wait(1)
+warn('[TEMPEST HUB] Loaded')
