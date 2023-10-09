@@ -84,10 +84,12 @@ end
 end
 
 function autoreplay()
-    while toggle do
-    local ohString1 = "replay"
-
-    game:GetService("ReplicatedStorage").endpoints.client_to_server.set_game_finished_vote:InvokeServer(ohString1)
+    while getgenv().autoreplay == true do
+        local args = {
+            [1] = "replay"
+        }
+        
+        game:GetService("ReplicatedStorage"):WaitForChild("endpoints"):WaitForChild("client_to_server"):WaitForChild("set_game_finished_vote"):InvokeServer(unpack(args))        
     end
 end
 
