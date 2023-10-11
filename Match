@@ -525,11 +525,11 @@ local raidLevels = {
     ['West City'] = 'west_city_raid',
     ['Mha (Stain Stage)'] = 'mha_stain',
     ['Marine Ford (Sengoku Stage)'] = 'marineford_sengoku',
-    ['Jojo Raid 1'] = '',
-    ['Jojo Raid 2'] = '',
-    ['Jojo Raid 3'] = '',
-    ['Jojo Raid 4'] = '',
-    ['Jojo Raid 5'] = '',
+    ['Jojo Raid 1'] = 'morioh_level_1',
+    ['Jojo Raid 2'] = 'morioh_level_2',
+    ['Jojo Raid 3'] = 'morioh_level_3',
+    ['Jojo Raid 4'] = 'morioh_level_4',
+    ['Jojo Raid 5'] = 'morioh_level_5',
 }
 
 local selectRaid = "" -- Adicione uma variável global para armazenar a seleção de raid
@@ -538,19 +538,19 @@ local selectRaid = "" -- Adicione uma variável global para armazenar a seleçã
 local function handleRaid(raidName, raidLevel)
     while getgenv()[raidName] == true do
         local args = {
-            [1] = "_lobbytemplate214"
+            [1] = "_lobbytemplate212"
         }
-
-        game:GetService("ReplicatedStorage").endpoints.client_to_server.request_join_lobby:InvokeServer(unpack(args))
+        
+        game:GetService("ReplicatedStorage"):WaitForChild("endpoints"):WaitForChild("client_to_server"):WaitForChild("request_join_lobby"):InvokeServer(unpack(args))        
         wait()
-        args = {
-            [1] = "_lobbytemplate214",
-            [2] = raidLevel, -- Corrigido: Use a variável raidLevel em vez de raidLevels
+        local args = {
+            [1] = "_lobbytemplate212",
+            [2] = raidLevel,
             [3] = false,
             [4] = "Hard"
         }
-
-        game:GetService("ReplicatedStorage").endpoints.client_to_server.request_lock_level:InvokeServer(unpack(args))
+        
+        game:GetService("ReplicatedStorage"):WaitForChild("endpoints"):WaitForChild("client_to_server"):WaitForChild("request_lock_level"):InvokeServer(unpack(args)) 
         wait(1)
     end
 end
@@ -589,7 +589,7 @@ local LegendLevels = {
 local selectLegend = "" -- Adicione uma variável global para armazenar a seleção de raid
 
 -- Função genérica para lidar com os raids
-local function handleRaid(legendname, legendlevel)
+local function handleLegend(legendname, legendlevel)
     while getgenv()[legendname] == true do
         local args = {
             [1] = "_lobbytemplategreen1"
@@ -1536,7 +1536,7 @@ local RightGroupBox = Tabs.Main:AddRightGroupbox('Raid')
 
 -- Modifique o código original para usar as funções redefinidas
 RightGroupBox:AddDropdown('Select Raid', {
-    Values = {'Entertainment District (Stage 1)', 'Entertainment District (Stage 2)', 'Entertainment District (Stage 3)', 'Entertainment District (Stage 4)', 'Entertainment District (Stage 5)', 'Uchiha (Stage 1)', 'Uchiha (Stage 2)', 'Uchiha (Stage 3)', 'Uchiha (Stage 4)', 'Uchiha (Stage 5)', 'West City Freeza  (Stage 1)', 'West City Freeza  (Stage 2)', 'West City Freeza  (Stage 3)', 'West City Freeza  (Stage 4)', 'West City Freeza  (Stage 5)', 'Demon Slayer Raid', 'Naruto Raid', 'Aot Raid', 'West City', 'Mha (Stain Stage)', 'Marine Ford (Sengoku Stage)'},
+    Values = {'Entertainment District (Stage 1)', 'Entertainment District (Stage 2)', 'Entertainment District (Stage 3)', 'Entertainment District (Stage 4)', 'Entertainment District (Stage 5)', 'Uchiha (Stage 1)', 'Uchiha (Stage 2)', 'Uchiha (Stage 3)', 'Uchiha (Stage 4)', 'Uchiha (Stage 5)', 'West City Freeza  (Stage 1)', 'West City Freeza  (Stage 2)', 'West City Freeza  (Stage 3)', 'West City Freeza  (Stage 4)', 'West City Freeza  (Stage 5)', 'Demon Slayer Raid', 'Naruto Raid', 'Aot Raid', 'West City', 'Mha (Stain Stage)', 'Marine Ford (Sengoku Stage)', 'Jojo Raid 1', 'Jojo Raid 2', 'Jojo Raid 3', 'Jojo Raid 4', 'Jojo Raid 5'},
     Default = 1,
     Multi = false,
     Text = 'Select Raid',
@@ -1560,7 +1560,7 @@ function autoLegendToggle()
 
     if legendlevel then
         getgenv()[selectLegend] = not getgenv()[selectLegend]
-        handleRaid(selectLegend, legendlevel)
+        handleLegend(selectLegend, legendlevel)
     end
 end
 
