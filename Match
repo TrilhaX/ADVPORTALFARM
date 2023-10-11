@@ -1,7 +1,7 @@
 warn('[TEMPEST HUB] Loading Ui')
 wait(1)
-local repo = 'https://raw.githubusercontent.com/violin-suzutsuki/LinoriaLib/main/'
-    
+local repo = 'https://raw.githubusercontent.com/TrapstarKSSKSKSKKS/LinoriaLib/main/'
+
 local Library = loadstring(game:HttpGet(repo .. 'Library.lua'))()
 local ThemeManager = loadstring(game:HttpGet(repo .. 'addons/ThemeManager.lua'))()
 local SaveManager = loadstring(game:HttpGet(repo .. 'addons/SaveManager.lua'))()
@@ -525,6 +525,11 @@ local raidLevels = {
     ['West City'] = 'west_city_raid',
     ['Mha (Stain Stage)'] = 'mha_stain',
     ['Marine Ford (Sengoku Stage)'] = 'marineford_sengoku',
+    ['Jojo Raid 1'] = '',
+    ['Jojo Raid 2'] = '',
+    ['Jojo Raid 3'] = '',
+    ['Jojo Raid 4'] = '',
+    ['Jojo Raid 5'] = '',
 }
 
 local selectRaid = "" -- Adicione uma variável global para armazenar a seleção de raid
